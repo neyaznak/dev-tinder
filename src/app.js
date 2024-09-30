@@ -2,19 +2,28 @@ const express = require("express");
 
 const app = express();
 
-const { adminAuth, userAuth } = require("./middlewares/auth");
-
-app.use("/admin", adminAuth);
-app.use("/user", userAuth);
-
-app.get("/user", (req, res, next) => {
-  res.send("User Data Sent");
+app.use("/", (err, req, res, next) => {
+  if (err) {
+    //Log your error
+    res.status(500).send("Something went wrong");
+  }
 });
-app.get("/admin/getAllData", (req, res, next) => {
-  res.send("All Data Sent");
+
+app.get("/getUserData", (req, res, next) => {
+  // try {
+    //logic of DB call and get user data
+    throw new Error("aagfdsgfdshvjd");
+    res.send("User Data Sent");
+  // } catch (err) {
+  //   res.status(500).send("Some error contact support team");
+  // }
 });
-app.get("/admin/deleteUser", (req, res, next) => {
-  res.send("User Deleted");
+
+app.use("/", (err, req, res, next) => {
+  if (err) {
+    //Log your error
+    res.status(500).send("Something went wrong");
+  }
 });
 
 app.listen(7777, () => {
