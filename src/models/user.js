@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { default: isEmail } = require("validator/lib/isEmail");
 
 const userSchema = new mongoose.Schema(
   {
@@ -17,10 +18,20 @@ const userSchema = new mongoose.Schema(
       unique: true,
       lowercase: true,
       trim: true,
+      validate(value) {
+        if (!validator.isEmail(value)) {
+          throw new Error("Invalid email address:" + value);
+        }
+      },
     },
     password: {
       type: String,
       required: true,
+      validate(value) {
+        if (!validator.isStrongPassword(value)) {
+          throw new Error("Not a strong password: " + value);
+        }
+      },
     },
     age: {
       type: Number,
@@ -38,6 +49,11 @@ const userSchema = new mongoose.Schema(
       type: String,
       default:
         "https://www.shutterstock.com/image-vector/vector-design-avatar-dummy-sign-260nw-1290556063.jpg",
+      validate(value) {
+        if (!validator.isURL(value)) {
+          throw new Error("Invalid photoUrl:" + value);
+        }
+      },
     },
     about: {
       type: String,
